@@ -1,0 +1,190 @@
+-- Add Class Levels Table
+CREATE TABLE class_levels (
+    class_id SERIAL PRIMARY KEY,
+    level_name VARCHAR(50) NOT NULL UNIQUE, -- e.g., 'Year 3', 'Year 4', 'Year 5'
+    description TEXT
+);
+
+-- Create Subjects Table
+CREATE TABLE subjects (
+    subject_id SERIAL PRIMARY KEY,
+    subject_name VARCHAR(100) NOT NULL UNIQUE, --e.g. Selective Math, Selective Thinking Skills
+    description TEXT,
+    class_id INTEGER NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (class_id) REFERENCES class_levels(class_id)
+
+);
+
+-- Create Units/chapters
+CREATE TABLE Units (
+    unit_id SERIAL PRIMARY KEY,
+    unit_name TEXT NOT NULL, --e.g. Unit 1, unit 2, Algebra etc
+    subject_id INTEGER NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
+
+-- Create Exams Table
+CREATE TABLE exams (
+    exam_id SERIAL PRIMARY KEY,
+    exam_name TEXT NOT NULL,
+    subject_id INTEGER NOT NULL,
+    difficulty_level VARCHAR(50) CHECK (difficulty_level IN ('Beginner', 'Intermediate', 'Advanced')),
+    time_limit_minutes INTEGER,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+---to be reviewed
+-- Create Questions Table
+CREATE TABLE questions (
+    question_id SERIAL PRIMARY KEY,
+    exam_id INTEGER NOT NULL,
+    question_text TEXT NOT NULL,
+    explanation TEXT,
+    points NUMERIC(5,2) DEFAULT 1.0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (exam_id) REFERENCES exams(exam_id)
+);
+
+-- Create Options Table
+CREATE TABLE question_options (
+    option_id SERIAL PRIMARY KEY,
+    question_id INTEGER NOT NULL,
+    option_text TEXT NOT NULL,
+    is_correct BOOLEAN NOT NULL DEFAULT FALSE,
+    
+    FOREIGN KEY (question_id) REFERENCES questions(question_id)
+);
+
+-- Create User Table
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(200) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Exam Results Table
+CREATE TABLE exam_results (
+    result_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    exam_id INTEGER NOT NULL,
+    total_score NUMERIC(5,2),
+    total_questions INTEGER,
+    correct_answers INTEGER,
+    completion_time INTERVAL,
+    completed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (exam_id) REFERENCES exams(exam_id)
+);
+
+--------------------useful queries--------------------
+--get question Options
+
+    SELECT
+        q.question_id,
+        q.question_text as question,
+        q.question_type,
+        q.explanation,
+        q.points,
+        q.unit_id,
+        q.subject_id,
+		o.option_id,
+		o.option_text,
+		o.is_correct
+    FROM questions q
+	JOIN question_options o
+	ON q.question_id = o.question_id
+	ORDER BY q.question_id, o.option_text;
+
+-------------------------------------------------------
+
+-- Create Indexes for Performance
+CREATE INDEX idx_subject_name ON subjects(subject_name);
+CREATE INDEX idx_exam_subject ON exams(subject_id);
+CREATE INDEX idx_question_exam ON questions(exam_id);
+CREATE INDEX idx_options_question ON question_options(question_id);
+CREATE INDEX idx_results_user ON exam_results(user_id);
+CREATE INDEX idx_results_exam ON exam_results(exam_id);
+------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--populate initial subjects
+
+insert into subjects (subject_name, description, class_id)
+values ('Selective-Reading','Selective Reading', 2),
+		('Selective-Mathematical Reasoning','Selective Mathematical Reasoning', 2) ,
+		('Selective-Thinking Skills', 'Selective Thinking Skills', 2),
+		('Selective-Writing','Selective Writing', 2);
+
+-------------------------
+--populate initial Units
+insert into Units (unit_name, subject_id)
+values ('Unit 1', 2), ('Unit 2', 2), ('Unit 3', 2), ('Unit 4', 2), ('Unit 5', 2);
+
+-----------------------------
+--populate exams Table
+insert into exams (exam_name, subject_id, difficulty_level, time_limit_minutes)
+values ('Math Exam 1', 2, 'Beginner', 30), ('Math Exam 2', 2, 'Intermediate', 45) ;
+
+--populate users Table
+insert into users (username, email, pwd)
+values ('ifti1621', 'ifti1621@yahoo.com', 'abc123'),
+('aadita', 'aadita.alam@outlook.com', 'abc123'),
+('rishita', 'rishita.alam@outlook.com', 'abc123') ;
+
+
+--populate roles Table
+insert into roles(rolename)
+values ('admin'), ('student'), ('parent'), ('teacher');
+
+--populate sample questions into questions Table
+insert into questions (subject_id, question_text)
+values (2, 'What is the capital of Bangladesh?'),
+        (2, 'What is 2+2= ?'),
+		(2, 'What is the capital of Australia?');
+
+--populate same question Options
+insert into question_options (question_id, option_text, is_correct)
+values (1, 'option 1', false),
+(1, 'option 2', true),
+(1, 'option 3', false),
+(1, 'option 4', false),
+(2, 'option 1', false),
+(2, 'option 2', false),
+(2, 'option 3', true),
+(3, 'option 1', false),
+(3, 'option 2', false),
+(3, 'option 3', false),
+(3, 'option 4', true),
+(6, 'option 1', true),
+(6, 'option 2', false),
+(6, 'option 3', false),
+(6, 'option 4', false);
+
+---populate sample records into exercise_history
+INSERT INTO exercise_history (user_id, unit_id, is_completed, total_score, total_questions, correct_answers, completion_time, started_at, completed_at)
+VALUES
+(19, 1, TRUE, 85.50, 10, 9, '00:15:30', '2024-12-01 10:00:00+00', '2024-12-01 10:15:30+00'),
+(19, 2, TRUE, 72.00, 8, 6, '00:12:45', '2024-12-01 11:00:00+00', '2024-12-01 11:12:45+00'),
+(19, 3, FALSE, NULL, 5, 3, NULL, '2024-12-01 12:00:00+00', NULL),
+(19, 4, FALSE, 90.00, 10, 9, '00:20:00', '2024-12-01 09:30:00+00', '2024-12-01 09:50:00+00'),
+(19, 5, FALSE, 65.00, 8, 5, '00:18:10', '2024-12-02 14:20:00+00', '2024-12-02 14:38:10+00'),
+(19, 6, FALSE, NULL, 7, 4, NULL, '2024-12-02 15:00:00+00', NULL),
+(19, 7, FALSE, 78.00, 9, 7, '00:22:30', '2024-12-03 08:15:00+00', '2024-12-03 08:37:30+00'),
+(19, 8, FALSE, 95.00, 10, 10, '00:10:15', '2024-12-03 09:45:00+00', '2024-12-03 09:55:15+00'),
+(19, 9, FALSE, 88.50, 10, 8, '00:16:00', '2024-12-03 10:10:00+00', '2024-12-03 10:26:00+00');
+
+
+
+
+

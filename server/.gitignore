@@ -1,0 +1,17 @@
+# Ignore node_modules in server
+node_modules/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore environment variables for server (if any)
+.env
+
+# Ignore build or temporary files (if any)
+build/
+dist/
+
+# Ignore editor files
+.vscode/
+.idea/

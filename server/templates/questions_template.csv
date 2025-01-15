@@ -1,0 +1,4 @@
+﻿q_id,question_text,question_type,option_1,option_2,option_3,option_4,option_5,option_6,correct_option,explanation,media_path
+1,What is 10+10?,mc,20,30,40,50,,,1,,
+2,what is 30 + 30,mc,10,60,20,,,,2,,
+3,Which city is in Australia?,mc,Sydney,Dhaka,Delhi,Beijing,,,1,,

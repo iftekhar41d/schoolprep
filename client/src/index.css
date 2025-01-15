@@ -1,0 +1,537 @@
+html {
+  font-family: "Montserrat", sans-serif;
+}
+
+
+body {
+  background-color: #9B7EBD;
+  background-color:#FAF7F0;
+  
+  background-image: url("https://www.transparenttextures.com/patterns/cream-pixels.png");
+  background-image: url("https://www.transparenttextures.com/patterns/brick-wall.png");
+
+}
+
+.header-btn{
+  margin: 5px;
+}
+
+.page-header{
+  background-color:#36C2CE ;
+  margin: auto -16px;
+  padding: 16px 32px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  color: #EBEAFF;
+}
+
+.page-header h1{
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  }
+
+footer {
+  background-color: #AAC4FF;
+  color: aliceblue;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+}
+
+.custom-footer{
+  margin-top: 50px;
+  color: lightgrey;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.content {
+  flex: 1; /* Makes the content take up remaining space */
+}
+
+.auth-form{
+  border: none;
+}
+
+.custom-margin{
+  margin-top: 200px;
+}
+
+.login-form{
+  margin-top: 100px;
+  height: 200px;
+  text-align: center;
+}
+
+.login-form input{
+  height: 30px;
+  width: 300px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #088395;
+  padding: 10px;
+  font-size: 0.9rem;
+}
+
+.login-form input:focus {
+  border-color: #AAC4FF;
+  box-shadow: 0 0 5px rgba(52, 116, 205, 0.5); /* Optional: Add a glow effect */
+}
+
+.login-form button{
+  background-color: #80C4E9 ;
+  border: none;
+  font-size: 1.2rem;
+  color: #EBEAFF;
+  height: 40px;
+  width: 200px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+
+form {
+  padding: 20px 0;
+  position: relative;
+}
+
+
+.course {
+  background-color: aliceblue;
+  display: row;
+  flex-direction: column;
+  border: 2px solid;
+}
+
+.welcome-msg{
+  border: none;
+  margin-top: auto;
+  color: #088395;
+}
+
+.subject-header{
+  color: white;
+  font-family:"Montserrat", sans-serif;
+  background-color: #9694FF;
+  background-image: url("https://www.transparenttextures.com/patterns/diamond-eyes.png");   
+  border:none;
+  font-weight: bold;  
+  margin: 2px;
+  padding: 1px;
+}
+
+.custom-page-title{
+  color: #FFB26F;
+  font-family:"Montserrat", sans-serif;
+  font-weight: bold;   
+}
+
+.quiz-menu{
+  border: none;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 50px;
+  
+}
+
+.custom-subheader{
+  color:#9694FF;
+  margin-bottom: 15px;
+
+}
+
+.quiz-menu p {
+  padding: 0px;
+  color:black;
+  font-size: 1.1rem;
+}
+
+.QuestionArea{
+  min-height: 100px;
+  background-color: #EBEAFF;
+  background-image: url("https://www.transparenttextures.com/patterns/ecailles.png");
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-family:"Montserrat", sans-serif;  
+  color:darkslateblue;
+  margin-bottom: 10px;
+}
+
+.QuesOptions Button{
+  width: 100%;
+}
+
+.NextButton{  
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+  align-items: center;
+}
+
+.NextButton Button{
+  margin: 10px;
+}
+
+.Explanation{
+  min-height: 130px;
+  border: 1px solid #FEF3E2 ;
+  margin-top: 10px;
+  background-color: antiquewhite;
+  color: #006A67 ;
+}
+
+.QuesOptions{  
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+  border-radius: 10px;
+  align-items: center;
+  min-height: 200px;
+}
+
+.course-th th{
+  background-color:#E3DFFD;
+  color:#3B1E54
+  }
+
+.large-switch .form-check-input {
+    width: 4rem; /* Adjust the width of the switch */
+    height: 1.5rem; /* Adjust the height of the switch */
+}
+
+.timer-switchcontrol{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+}
+
+.timer-switchcontrol p{
+  margin-bottom: 0;
+  line-height: 1.5; /* Match the switch's height */
+  margin-right: 0;
+  padding-right: 0;
+  width: 180px;
+}
+
+.rounded-border{
+  border-radius: 5px;
+}
+
+.timer{
+  color: orangered;
+  font-family:"Montserrat", sans-serif;
+  font-size: 1.1rem;
+}
+
+.timer-margin{
+  margin-right: 8px;
+  margin-bottom: 8px;
+  margin-top: 0px;
+  }
+
+.review-text{
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  color: lightseagreen;
+  margin: 5px;
+}
+
+.logo{
+  height: 80px;
+  width: 80px;
+  
+}
+
+.logo-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+.unit-tick{
+  font-size: 25px;
+  margin-left: 5px;
+  margin-right: 30px;
+}
+
+.unit-accuracy {
+  color: #088395;
+  margin: 5px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.progress-bar-custom {
+  height: 20px;
+}
+
+.ImageArea {
+  min-height: 150px;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;    /* Center vertically */
+  margin-top: 10px;
+  text-align: center;      /* For fallback text */
+}
+
+.ImageArea img {
+  max-width: 100%;
+  max-height: 150px;       /* Prevent image from exceeding container height */
+  height: auto;
+}
+
+.ImageArea p {
+  color: #888;
+}
+
+.subheader-container {
+  display: flex; /* Makes the div a flex container */
+  align-items: center; /* Vertically aligns items in the center */
+}
+
+.sub-image {
+  margin-right: 10px; /* Adds some space between the image and the header */
+  width: 100px; /* Example width for the image */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.sub-header {
+  margin: 0; /* Remove default margin to ensure proper alignment */
+}
+
+.quiz-review-image{
+  height: 220px;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.custom-header-position{
+  width: 70%;
+  display: flex;
+  justify-content: space-between;  
+}
+
+.custom-metadata-header{
+  display: flex;
+  margin-top:20px;
+  margin-bottom: 50px;
+  margin-left: 0;
+}
+
+.custom-metadata-header p{
+ margin-left: 10px;
+ margin-top: 5px;
+ margin-right: 20px;
+}
+
+.custom-metadata-header select{
+  width: 200px;
+  border-radius: 5px;
+  border-color: #088395;
+ }
+
+ .admin-table-header{
+  color: slateblue;
+  margin-bottom: 20px;
+  margin-left: 0;
+  padding-left: 0;
+ }
+
+ .admin-table-header1{
+  color: slateblue;
+  margin-bottom: 40px;
+  margin-left: 0;
+  padding-left: 0;
+ }
+
+.custom-tr{
+  background-color: #9694FF;
+}
+
+.custom-metadata-add{
+  display: flex;
+  justify-content: space-between;  
+}
+
+.question-upload{
+  border: none;
+}
+
+/* quillEditor.css */
+.quill-editor {
+  height: 500px; /* Increase the height of the editor */
+  width: 100%;   /* Set width to 100% or specify a fixed width */
+}
+
+.lesson-button-area{
+  margin-top: 50px;
+}
+
+.lesson-header{
+  width:90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  
+}
+
+.lesson-header h2 {
+  margin: 0; /* Removes any default margin that might cause misalignment */
+}
+
+.lesson-header button{
+  height: 40px;
+  margin-top: 50px;
+  background-color: #9694FF;
+  border:none;
+}
+
+.lesson-area{
+  margin-top: 50px;
+  padding: 15px;
+  border: 1px solid #FBD288;
+  border-radius: 20px;
+  background-color: #f9f9f9 ;
+}
+
+.lesson-area button{
+  height: 40px;
+  background-color: #9694FF;
+  border:none;
+  }
+
+  .button-container{
+    text-align: right;
+    margin-bottom: 30px;
+  }
+
+div[contenteditable='true'] img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+  
+.resize-handle {
+    position: absolute;
+    background: #000;
+    width: 10px;
+    height: 10px;
+    cursor: se-resize;
+}
+
+/* Editor styles */
+.editor-container {
+  margin-bottom: 20px;
+}
+
+.editor-wrapper {
+  height: 400px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+/* Form styles */
+.form-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.subject-select,
+.unit-select {
+  margin-bottom: 20px;
+}
+
+.form-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.editor-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.lesson-button-area {
+  margin-top: 20px;
+}
+
+Additional CSS Styles for Image Resizing
+
+/* Image resize styles */
+.image-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.image-wrapper img {
+  display: block;
+}
+
+.resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background-color: #5DB996;
+  cursor: se-resize;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Hide resize handle when not hovering over image */
+.image-wrapper:not(:hover) .resize-handle {
+  display: none;
+}
+
+/* ---------------------------------------------------------------custom css for Quill */
+.quill {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ql-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.ql-toolbar {
+  display: block !important;
+  visibility: visible !important;
+  border: 1px solid red; /* Temporary for debugging */
+}
+
+.ql-editor {
+  min-height: 100%;
+}
+
+.ql-video {
+  z-index: 2050; /* Ensure the modal is above other elements */
+  position: relative;
+  overflow: visible; /* Ensure modal content is fully visible */
+}
+
+.ql-tooltip input {
+  width: 100%; /* Make input box use full width */
+
+}
+
+.ql-snow .ql-tooltip[data-mode="video"] {
+  left: 0 !important;
+  z-index: 1000;
+}
+
+
+/* custom css for Quill ends here */
