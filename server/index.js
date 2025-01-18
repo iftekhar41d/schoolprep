@@ -50,7 +50,7 @@ app.use('/api/questions', questionsRouter);
 app.use('/api', exerciseHistoryRouter);
 app.use('/', subjectRouter);
 app.use('/', unitsRouter);
-app.use('/', classLevelRouter);
+app.use('/api', classLevelRouter);
 app.use('/api',router);
 app.use('/api', lessonsRouter);
 
