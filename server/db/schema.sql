@@ -134,8 +134,8 @@ ADD CONSTRAINT unique_user_unit UNIQUE (user_id, unit_id);
 CREATE TABLE lessons (
     lesson_id SERIAL PRIMARY KEY,
     unit_id INT REFERENCES units(unit_id) ON DELETE CASCADE,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL, -- HTML content with embedded media
+    lesson_title TEXT NOT NULL,
+    lesson_content TEXT NOT NULL, -- HTML content with embedded media
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );

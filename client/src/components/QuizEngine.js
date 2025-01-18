@@ -142,7 +142,7 @@ function QuizEngine() {
   //function to insert exerciseHistory
   const insertExerciseHistory = async (exerciseData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/end-exercise', exerciseData); // Replace with your API URL
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/end-exercise`, exerciseData); // Replace with your API URL
       //console.log('Exercise history inserted:', response.data);
       return response.data;
     } catch (err) {
