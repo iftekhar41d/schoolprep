@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_API_BASE_URL}/api`,
 });
 
 const Subjects = () => {
