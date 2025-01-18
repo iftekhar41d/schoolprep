@@ -8,7 +8,7 @@ import TimerComponent from './Timer';
 import { AuthContext } from './AuthContext';
 
 const api = axios.create({
-    baseURL: `${process.env.REACT_APP_API_BASE_URL}/api/questions/`,
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/api`,
 
   });
 
@@ -40,7 +40,7 @@ function QuizEngine() {
 
           //if token found, make the api call
           try{
-              const response = await api.get(`/${unitid}`, {
+              const response = await api.get(`/questions/${unitid}`, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Replace with cookie reading if using cookies
                 },
@@ -142,7 +142,8 @@ function QuizEngine() {
   //function to insert exerciseHistory
   const insertExerciseHistory = async (exerciseData) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/end-exercise`, exerciseData); // Replace with your API URL
+      //const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/end-exercise`, exerciseData); // Replace with your API URL
+      const response = await api.post('/end-exercise', exerciseData);
       //console.log('Exercise history inserted:', response.data);
       return response.data;
     } catch (err) {
