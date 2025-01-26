@@ -53,6 +53,25 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+--updated users table
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+	username VARCHAR(100) UNIQUE,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    pwd TEXT NOT NULL,
+	is_active BOOLEAN,
+    reset_password_token VARCHAR(255),
+    reset_password_expires TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--script to add additional columns
+ALTER TABLE users 
+ADD COLUMN reset_password_token VARCHAR(255),
+ADD COLUMN reset_password_expires TIMESTAMP,
+ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
 
 --Create roles table
 CREATE TABLE roles (
