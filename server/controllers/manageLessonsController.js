@@ -62,7 +62,7 @@ lessonsRouter.get('/lessons/:unitid', async (req, res) => {
 
     if (result.rows.length === 0) {
       // No records found
-      console.log("No lessons found for this unit.");
+      //console.log("No lessons found for this unit.");
       return res.status(200).json({ lesson_content: "" });      
       } else {
       // Records found
@@ -131,7 +131,7 @@ const query_values = [user_id, unit_id];
     // Insert the new lesson into the 'lessons' table
     const result = await pool.query(query, query_values );
     
-      console.log(result.rows);
+      //console.log(result.rows);
       res.status(200).json(result.rows[0]);    
   } catch (error) {
     console.error('Error saving lesson:', error);
