@@ -23,6 +23,8 @@ import AdminExams from './components/AdminExams';
 import AdminUsers from './components/AdminUsers';
 import LearningBoard from './components/LearningBoard';
 import AdminLessonDraft from './components/AdminLessonDraft';
+import ForgotPassword from './components/ForgetPassword';
+import ResetPassword from './components/ResetPassword';
 
 
 //protected routes
@@ -40,6 +42,9 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path='/register' element={<Register />} />
           <Route path ='/login' element ={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+
           <Route path='/dashboard' 
                  element={
                   <ProtectedRoute>

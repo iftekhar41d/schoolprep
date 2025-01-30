@@ -35,7 +35,7 @@ forgetPasswordRouter.post('/forgot-password', async (req, res) => {
         // Send the reset link to the user's email
         //replace the front-end URL with production server URL
         
-        const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+        const resetUrl = `${process.env.CLIENT_DOMAIN}/reset-password/${resetToken}`;
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
