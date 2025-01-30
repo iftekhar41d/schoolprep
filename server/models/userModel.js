@@ -14,5 +14,10 @@ const createUser = async (email, password) => {
     const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
     return result.rows[0];
   };
+
+  const getUserStatus = async (email) =>{
+    const result = await db.query('SELECT is_active FROM users WHERE email = $1', [email]);
+    return result.rows[0];
+  }
   
-  export { createUser, getUserByEmail };
+  export { createUser, getUserByEmail, getUserStatus };

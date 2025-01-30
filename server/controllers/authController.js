@@ -1,6 +1,6 @@
 //logic to handle user login and registration
 
-import {createUser, getUserByEmail} from '../models/userModel.js';
+import {createUser, getUserByEmail, getUserStatus} from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from "dotenv";
@@ -50,6 +50,14 @@ export const login = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    //If user is found, check if user is active, i.e. admin has authorized or payment is successful
+    const {is_active} = await getUserStatus(email);
+    //console.log(`user activation status: ${is_active}`);
+    if (!is_active){
+      return res.status(403).json({ message: 'User not active; please contact support!' });
+    }
+    
+    //If it's an active user, check the password
     const isPasswordValid = await bcrypt.compare(password, user.pwd); //match password
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });

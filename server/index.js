@@ -16,6 +16,7 @@ import unitsRouter from "./controllers/unitsController.js";
 import classLevelRouter from "./controllers/classLevelsController.js";
 import router from "./controllers/manageQuestionsController.js";
 import lessonsRouter from "./controllers/manageLessonsController.js";
+import forgetPasswordRouter from "./controllers/forgetPasswordController.js";
 
 const envVariables = dotenv.config(); //for accessing environment variables
 const app = express(); 
@@ -53,6 +54,7 @@ app.use('/api', unitsRouter);
 app.use('/api', classLevelRouter);
 app.use('/api',router);
 app.use('/api', lessonsRouter);
+app.use('/api', forgetPasswordRouter);
 
 //start server
 app.listen(PORT, ()=>{

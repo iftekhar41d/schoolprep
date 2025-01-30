@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
+import ForgotPassword from './ForgetPassword';
 
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_API_BASE_URL}/api/users/`,
@@ -14,6 +15,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false); 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -46,8 +48,8 @@ function Login() {
 
     }catch(error){
       //alert('Login failed. Please try again');
-      console.log(error.response);
-      setErrorMessage(error.response.data.message);
+      //console.log(error.response);
+      setErrorMessage(error.response?.data?.message || 'Login failed. Please try again.');
     }   
 
   }
@@ -60,38 +62,53 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  return (
-    <div className="container custom-margin">
-    <div className="row justify-content-center ">
-      <div className="col-md-6 col-lg-4 ">
-        <div className="card shadow">
-          <div className="card-body auth-form">
-            <h3 className="text-center mb-4">Login</h3>
-            <form  onSubmit={handleSubmit}>     
-              <div className="mb-3">
-                <input type="email" value={email} onChange={handleEmailChange} className="form-control" name="email" placeholder="Enter your email" required/>
-              </div>
-              
-              <div className="mb-3">
-                <input type="password" value={password} onChange={handlePasswordChange} className="form-control" name="password" placeholder="Enter your password" required/>
-              </div>
-              
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <a href="#" className="text-decoration-none">Forgot Password?</a>
-              </div>
-            
-              <div className="d-grid">
-                <button type="submit" className="btn btn-primary">Login</button>                 
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault();
+    setShowForgotPassword(true); // Show the forgot password form
+  };
 
+  const handleBackToLogin = () => {
+    setShowForgotPassword(false); // Go back to the login form
+  };
+
+  return (
+    <>
+      {showForgotPassword ? (
+        <ForgotPassword onBackToLogin={handleBackToLogin} />
+      ) : (
+          <div className="container custom-margin">
+          <div className="row justify-content-center ">
+            <div className="col-md-6 col-lg-4 ">
+              <div className="card shadow">
+                <div className="card-body auth-form">
+                  <h3 className="text-center mb-4">Login</h3>
+                  <form  onSubmit={handleSubmit}>     
+                    <div className="mb-3">
+                      <input type="email" value={email} onChange={handleEmailChange} className="form-control" name="email" placeholder="Enter your email" required/>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <input type="password" value={password} onChange={handlePasswordChange} className="form-control" name="password" placeholder="Enter your password" required/>
+                    </div>
+                    
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <a href="#" onClick={handleForgotPasswordClick} className="text-decoration-none">Forgot Password?</a>
+                    </div>
+                  
+                    <div className="d-grid">
+                      <button type="submit" className="btn btn-primary">Login</button>                 
+
+                    </div>
+                  </form>
+                  {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}  
+                </div>
               </div>
-            </form>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}  
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>  
-  )
+      )}
+  </>  
+  );
 }
 
 export default Login;
