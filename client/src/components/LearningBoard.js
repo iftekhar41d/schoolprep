@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_API_BASE_URL}/api`,
 
 });
 
@@ -28,8 +28,8 @@ function LearningBoard() {
       // Make the API call when the component mounts or when the unitid changes
       const fetchLessonContent = async () => {
         try {
-          const response = await api.get(`/api/lessons/${unitid}`);
-          console.log("API Response:", response);
+          const response = await api.get(`/lessons/${unitid}`);
+          //console.log("API Response:", response);
 
             // Check if the response contains content
           if (response?.data?.lesson_content) {
@@ -56,8 +56,9 @@ function LearningBoard() {
       // Define an async function to fetch data
       const fetchLessonStatus = async () => {
         try {
-          const response = await axios.post('http://localhost:5000/api/lessonstatus', lessonHistoryParams);
-          console.log(response.data);
+          //modified api call from axios
+          const response = await api.post(`/lessonstatus`, lessonHistoryParams);
+          //console.log(response.data);
           const { is_completed } = response.data; // Destructure 'is_completed' from API response
           if (is_completed) {
             //console.log(`is lesson completed? ${is_completed}`);
@@ -110,11 +111,11 @@ function LearningBoard() {
       completed_at: new Date().toISOString(), // Use current timestamp
     };
 
-    console.log(lessonData);
+    //console.log(lessonData);
     
         // make API call to insert record
         try {
-          const response = await axios.post('http://localhost:5000/api/end-lesson', lessonData); // Replace with your API URL
+          const response = await api.post(`/end-lesson`, lessonData); // Replace with your API URL
           if (response.data){
             console.log(`response from client component: ${response.data}`);
           }
