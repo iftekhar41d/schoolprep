@@ -174,6 +174,21 @@ CREATE TABLE lesson_history (
     UNIQUE (user_id, unit_id)
 );
 
+--create question report history
+-- Create Exercise History Table
+CREATE TABLE question_report (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    question_id INTEGER NOT NULL,
+    is_reported BOOLEAN DEFAULT FALSE,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (question_id) REFERENCES questions(question_id),
+    -- Ensure user_id and unit_id combination is unique
+    UNIQUE (user_id, question_id)
+);
+
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 -- Create Indexes for Performance

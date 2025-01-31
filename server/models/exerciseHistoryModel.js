@@ -46,5 +46,37 @@ const insertOrUpdateExerciseHistory = async ({
     throw new Error('Database error');
   }
   };  
+
+  const insertQuestionReport = async ({
+    user_id,
+    question_id,
+    is_reported,
+    updated_at
+}) => {
+  const query = `
+        INSERT INTO question_report 
+        (user_id, question_id, is_reported, updated_at) 
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (user_id, question_id) 
+        DO UPDATE SET 
+        is_reported = EXCLUDED.is_reported,
+        updated_at = EXCLUDED.updated_at
+        RETURNING *;` ;
+    
+    const values = [
+        user_id,
+        question_id,
+        is_reported,
+        updated_at
+    ];
+
+  try {
+    const result = await db.query(query, values);
+    return result.rows[0];  // Return the first row of the result
+  } catch (err) {
+    console.error('Error inserting/updating question report:', err);
+    throw new Error('Database error');
+  }
+  };  
   
-  export {insertOrUpdateExerciseHistory};
+  export {insertOrUpdateExerciseHistory, insertQuestionReport};
