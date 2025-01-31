@@ -25,6 +25,7 @@ function QuizEngine() {
     const [optionChosen, setOptionChosen] = useState(null);
     const [isOptionCorrect, setIsOptionCorrect] = useState(false);
     const navigate = useNavigate();
+    const [isQuestionReported, setIsQuestionReported] = useState(false);
     
     
     const token = localStorage.getItem('token'); // Retrieve token from localStorage
@@ -106,6 +107,48 @@ function QuizEngine() {
     setTimeLeft(groupedQuestions.length*60); //calculate timer based on number of questions 
     }, [groupedQuestions]); // This effect runs only when `groupedQuestions` changes  
   
+  /*  
+  //This effect runs only when a new question is loaded
+  useEffect(() => {
+    //console.log('new question loaded');
+
+    const fetchQuestionReportStatus = async () => {
+          // Guard clause to prevent accessing undefined data
+    if (!groupedQuestions.length || currQuestion >= groupedQuestions.length) {
+      console.log('Questions not loaded yet or invalid question index');
+      return;
+    }
+
+      const reportQuestionData = {
+        user_id: loggedinUserId, 
+        question_id: groupedQuestions[currQuestion].question_id,
+      }
+
+      //console.log(reportQuestionData);
+
+      try {
+        //modified api call from axios
+        const response = await api.post(`/questionreportstatus`, reportQuestionData);
+        const { is_reported } = response.data; // Destructure 'is_reported' from API response
+        if (is_reported) {
+          //console.log(`is lesson completed? ${is_completed}`);
+          setIsQuestionReported(true); // Update state if is_completed is true
+        } else {
+          setIsQuestionReported(false);
+        }
+        
+      } catch (error) {
+        console.error('Error fetching report question status:', error);
+        setIsQuestionReported(false);
+      }      
+    };
+
+    fetchQuestionReportStatus(); // Call the async function inside useEffect
+    
+    }, [currQuestion, groupedQuestions, loggedinUserId]); // This effect runs only when current question changes
+    */
+  
+  //console.log(`status of reported question: ${isQuestionReported}`);    
 
   const handleOptionClick = (optionId, isCorrect)=>{
     //play audio when button is clicked
@@ -124,7 +167,45 @@ function QuizEngine() {
 
   const nextQuestion = ()=>{
     setCurrQuestion((currQuestion) => currQuestion + 1);
-    setOptionChosen(null);    
+    setOptionChosen(null);
+    setIsQuestionReported(false); //reset unless we get the actual status from the database   
+  }
+  
+  // function to insert question report records  
+  const insertQuestionReportHistory = async (reportQuestionParams) => {
+    try {
+      const response = await api.post('/report-question', reportQuestionParams);
+      return response.data;
+    } catch (err) {
+      console.error('Error inserting question report:', err);
+      throw err;
+    }
+  };
+
+  // function to report question in case it's suspected that the correct option is not set properly
+  const reportQuestion = async ()=>{
+    //console.log('question reported');
+    setIsQuestionReported(true);
+
+    //get status of the question whether it's already reported by the user
+    //console.log(groupedQuestions[currQuestion].question_id);
+    const reportQuestionParams = {
+      user_id: loggedinUserId, 
+      question_id: groupedQuestions[currQuestion].question_id,
+      is_reported: true,
+      updated_at: new Date().toISOString(),
+    }
+    
+    //console.log(reportQuestionParams);
+    // make API call to insert record
+    try {
+      await insertQuestionReportHistory(reportQuestionParams);
+      //alert('Quiz results saved successfully!');
+
+    } catch (err) {
+      alert('Failed to save exercise completion history. Please try again.');
+    }     
+
   }
 
   //function to calculate postgresql-compatible interval
@@ -167,7 +248,7 @@ function QuizEngine() {
         completed_at: new Date().toISOString(), // Use current timestamp
       };
 
-      console.log(exerciseData);
+      //console.log(exerciseData);
       
       // make API call to insert record
       try {
@@ -187,139 +268,160 @@ const loadDashboard = () => {
 };
 
 //play audio when button is clicked
-  const audioRef = useRef(null);
-
-  
+  const audioRef = useRef(null);  
       
     return (
         <div className='container'>
             <div className='row'>
-                <div className='col-12 col-md-8 mx-auto'>
-           
-        {errorMessage && (
-            <div className='container text-center mt-5'>
-            <p className='alert alert-danger'>
-                {errorMessage}
-            </p>
-            <button className='btn btn-primary' onClick={loadDashboard}>Go to Dashboard</button>
-            </div>)}
+              <div className='parentArea'>
+                <div className='col-12 col-md-8 mx-auto'>           
+                    {errorMessage && (
+                        <div className='container text-center mt-5'>
+                            <p className='alert alert-danger'>
+                                {errorMessage}
+                            </p>
+                            <button className='btn btn-primary' onClick={loadDashboard}>Go to Dashboard</button>
+                        </div>)}
 
-        {!errorMessage && <TimerComponent isTimerOn={isTimerOn} timeLeft={timeLeft} />}
-        
-        {groupedQuestions.length > 0 ? (
-            <>
-                {/* Question text */}
-                <div className='QuestionArea'>                    
-                    <p>[Q {currQuestion+1}/{totalQuestions}] {groupedQuestions[currQuestion].question}</p>
-                </div>
+                    {!errorMessage && <TimerComponent isTimerOn={isTimerOn} timeLeft={timeLeft} />}
+                    
+                    {groupedQuestions.length > 0 ? (
+                        <>
+                            {/* Question text */}
+                            <div className='QuestionArea'>                    
+                                <p>[Q {currQuestion+1}/{totalQuestions}] {groupedQuestions[currQuestion].question}</p>
+                            </div>
 
-                {/* Question Image Area, if any */}
-                {groupedQuestions[currQuestion].media_path && (
-                <div className="ImageArea">
-                    <img 
-                      src={groupedQuestions[currQuestion].media_path} 
-                      alt="Question related" 
-                      style={{ maxWidth: '100%', height: 'auto' }} 
-                   />                
-                </div>)}
+                            {/* Question Image Area, if any */}
+                            {groupedQuestions[currQuestion].media_path && (
+                            <div className="ImageArea">
+                                <img 
+                                  src={groupedQuestions[currQuestion].media_path} 
+                                  alt="Question related" 
+                                  style={{ maxWidth: '100%', height: 'auto' }} 
+                              />                
+                            </div>)}
 
-                {/* Render options */}
-                <div className='QuesOptions'>
-                {groupedQuestions[currQuestion].options.map((option, optionindex) => (
+                            {/* Render options */}
+                            <div className='QuesOptions'>
+                            {groupedQuestions[currQuestion].options.map((option, optionindex) => (
 
-                        <Button
-                            key={option.option_id}
-                            onClick={() => handleOptionClick(option.option_id, option.is_correct)}
-                            variant='contained'
-                            size='large'
-                            //color={optionChosen === option.option_id && isOptionCorrect ? "success" : "primary"} // Change color dynamically
-                            color={
-                                optionChosen === option.option_id && isOptionCorrect
-                                  ? "success"
-                                  : optionChosen === option.option_id
-                                  ? "error"
-                                  : "primary"
-                              }
-                            disabled={optionChosen !== null} // Disable all buttons after a selection
-                            sx={{
-                                //increase button size
-                                
-                                // Retain color when disabled
-                                "&.Mui-disabled": {
-                                  backgroundColor:
-                                  optionChosen === option.option_id && isOptionCorrect
-                                      ? "success.main"
-                                      : optionChosen === option.option_id
-                                      ? "error.main"
-                                      : "primary.main",
-                                  color: "white",
-                                  cursor: "default", // Prevent cursor from changing when disabled                                                             
-                                },
-                                // Ensure cursor is a pointer only when enabled
-                                "&:hover": {
-                                    cursor: optionChosen === null ? "pointer" : "default",
-                                },
-                                textTransform: 'none',
-                              }}
-                            style={{ margin: "10px", padding:'20px 20px' }}
+                                    <Button
+                                        key={option.option_id}
+                                        onClick={() => handleOptionClick(option.option_id, option.is_correct)}
+                                        variant='contained'
+                                        size='large'
+                                        //color={optionChosen === option.option_id && isOptionCorrect ? "success" : "primary"} // Change color dynamically
+                                        color={
+                                            optionChosen === option.option_id && isOptionCorrect
+                                              ? "success"
+                                              : optionChosen === option.option_id
+                                              ? "error"
+                                              : "primary"
+                                          }
+                                        disabled={optionChosen !== null} // Disable all buttons after a selection
+                                        sx={{
+                                            //increase button size
+                                            
+                                            // Retain color when disabled
+                                            "&.Mui-disabled": {
+                                              backgroundColor:
+                                              optionChosen === option.option_id && isOptionCorrect
+                                                  ? "success.main"
+                                                  : optionChosen === option.option_id
+                                                  ? "error.main"
+                                                  : "primary.main",
+                                              color: "white",
+                                              cursor: "default", // Prevent cursor from changing when disabled                                                             
+                                            },
+                                            // Ensure cursor is a pointer only when enabled
+                                            "&:hover": {
+                                                cursor: optionChosen === null ? "pointer" : "default",
+                                            },
+                                            textTransform: 'none',
+                                          }}
+                                        style={{ margin: "10px", padding:'20px 20px' }}
+                                    >
+                                      {optionindex+1}. {option.option_text}
+                                    </Button>
+                                    
+                                ))}
+                                <audio ref={audioRef} src="/click.mp3" />
+                            </div>
+                            
+                            {/* Next or End button */}
+                            <div className = "NextButton">
+                            {currQuestion === groupedQuestions.length - 1 ? (
+                                <Button 
+                                    variant="contained" 
+                                    onClick={loadQuizReviewScreen}
+                                    disabled={optionChosen== null}
+                                    sx={{
+                                        backgroundColor: "#8B5DFF", // Custom purple color
+                                        color: "#fff", // White text
+                                        "&:hover": {
+                                          backgroundColor: "#6A42C2", // Darker purple on hover
+                                        },
+                                      }}
+                                      style={{ margin: "8px", padding:'10px 20px' }}
+                                >
+                                    End Quiz
+                                </Button>
+                            ) : (
+                                <Button 
+                                    variant="contained" 
+                                    onClick={nextQuestion}
+                                    disabled={optionChosen== null}
+                                    sx={{
+                                        backgroundColor: "#8B5DFF", // Custom purple color
+                                        color: "#fff", // White text
+                                        "&:hover": {
+                                          backgroundColor: "#6A42C2", // Darker purple on hover
+                                        },
+                                      }}
+                                      style={{ margin: "8px", padding:'10px 20px' }}
+                                >
+                                    Next Question
+                                </Button>
+                            )}
+                            </div>
+
+                            {/* Explanation area: display only when an option is selected and learning mode is enabled */}
+                            {optionChosen && isLearningMode && (                
+                            <div className='Explanation'>
+                                <p>{groupedQuestions[currQuestion].explanation} </p>
+                            </div>)}                            
+                        </>
+                    ) : (
+                        <p></p> // Display a loading message while questions are being fetched            
+                    )}
+
+
+                  </div>
+
+                  {/* Report question. This div is for beta testing only */}
+                  {!isQuestionReported && 
+                  <div >
+                      <Button 
+                          variant="contained" 
+                          onClick={reportQuestion}
+                          disabled={optionChosen== null}
+                          sx={{
+                              backgroundColor: "#D77FA1", // Custom purple color
+                              color: "#fff", // White text
+                              "&:hover": {
+                                backgroundColor: "#632626", // Darker purple on hover
+                              },
+                            }}
+                            style={{ margin: "1px", padding:'10px 20px' }}
                         >
-                           {optionindex+1}. {option.option_text}
-                        </Button>
-                        
-                    ))}
-                    <audio ref={audioRef} src="/click.mp3" />
-                </div>
-                
-                {/* Next or End button */}
-                <div className = "NextButton">
-                {currQuestion === groupedQuestions.length - 1 ? (
-                    <Button 
-                        variant="contained" 
-                        onClick={loadQuizReviewScreen}
-                        disabled={optionChosen== null}
-                        sx={{
-                            backgroundColor: "#8B5DFF", // Custom purple color
-                            color: "#fff", // White text
-                            "&:hover": {
-                              backgroundColor: "#6A42C2", // Darker purple on hover
-                            },
-                          }}
-                          style={{ margin: "8px", padding:'10px 20px' }}
-                    >
-                        End Quiz
-                    </Button>
-                ) : (
-                    <Button 
-                        variant="contained" 
-                        onClick={nextQuestion}
-                        disabled={optionChosen== null}
-                        sx={{
-                            backgroundColor: "#8B5DFF", // Custom purple color
-                            color: "#fff", // White text
-                            "&:hover": {
-                              backgroundColor: "#6A42C2", // Darker purple on hover
-                            },
-                          }}
-                          style={{ margin: "8px", padding:'10px 20px' }}
-                    >
-                        Next Question
-                    </Button>
-                )}
-                </div>
-
-                {/* Explanation area: display only when an option is selected and learning mode is enabled */}
-                {optionChosen && isLearningMode && (                
-                <div className='Explanation'>
-                    <p>{groupedQuestions[currQuestion].explanation} </p>
-                </div>)}
-                
-            </>
-        ) : (
-            <p></p> // Display a loading message while questions are being fetched            
-        )}     
-        
-      </div>
-      </div>
+                          Report
+                      </Button>
+                                        
+                  </div>
+                  }        
+              </div>
+          </div>
       </div>
     )
 }

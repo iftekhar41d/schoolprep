@@ -535,3 +535,16 @@ Additional CSS Styles for Image Resizing
 
 
 /* custom css for Quill ends here */
+
+.parentArea {
+  display: flex; /* Enables flexbox */
+  gap: 5px; /* Adds space between divs */
+}
+
+.reportQuestionArea {
+  border:1px solid #ccc;
+}
+
+.questionOptionArea {
+  border:1px solid blue;
+}
