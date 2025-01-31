@@ -15,7 +15,7 @@ const getAllCourseUnits = async (userid) => {
     JOIN units u on s.subject_id = u.subject_id
 	  LEFT JOIN exercise_history eh ON u.unit_id = eh.unit_id AND eh.user_id = $1
     LEFT JOIN lesson_history lh on u.unit_id = lh.unit_id AND lh.user_id = $2
-	  ORDER BY subjectid, unit`,[userid, userid]);
+	  ORDER BY subjectid, unitid`,[userid, userid]);
         
     return result.rows; //array of course units
   };
