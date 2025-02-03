@@ -7,6 +7,7 @@ const api = axios.create({
 });
 
 function Register() {
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -18,7 +19,8 @@ function Register() {
 
         try{
             //make api call to register user info
-            const response = await api.post('/register', {email,password});
+            //console.log(fullName);
+            const response = await api.post('/register', {email,password,fullName});
 
             //if registration is successful
             setErrorMessage("");
@@ -39,6 +41,10 @@ function Register() {
         
     }
 
+    const handleFullNameChange = (e)=>{
+        setFullName(e.target.value);
+    };
+
     const handleEmailChange = (e)=>{
         setEmail(e.target.value);
     };
@@ -54,19 +60,23 @@ function Register() {
             <div className="card shadow">
             <div className="card-body auth-form">
                 <h3 className="text-center mb-4">Register</h3>
-                <form  onSubmit={handleSubmit}>     
-                <div className="mb-3">
-                    <input type="email" value={email} onChange={handleEmailChange} className="form-control" name="email" placeholder="Enter your email" required/>
-                </div>
-                
-                <div className="mb-3">
-                    <input type="password" value={password} onChange={handlePasswordChange} className="form-control" name="password" placeholder="Enter your password" required/>
-                </div>          
-            
-                <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">Submit</button>                 
+                <form  onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <input type="text" value={fullName} onChange={handleFullNameChange} className="form-control" name="fullName" placeholder="Enter your full name" required/>
+                    </div>    
 
-                </div>
+                    <div className="mb-3">
+                        <input type="email" value={email} onChange={handleEmailChange} className="form-control" name="email" placeholder="Enter your email" required/>
+                    </div>
+                    
+                    <div className="mb-3">
+                        <input type="password" value={password} onChange={handlePasswordChange} className="form-control" name="password" placeholder="Enter your password" required/>
+                    </div>          
+                
+                    <div className="d-grid">
+                        <button type="submit" className="btn btn-primary">Submit</button>                 
+
+                    </div>
                 </form>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}  
             </div>

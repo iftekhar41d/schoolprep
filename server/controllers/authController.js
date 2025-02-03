@@ -12,6 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Validation schema
 const schema = Joi.object({
+  fullName: Joi.string().min(2).max(100).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required() 
 });
@@ -24,7 +25,8 @@ export const register = async (req, res) => {
   if (error) return res.status(400).json({ message: error.details[0].message });
   
   //continue with registration logic
-  const { email, password} = req.body;
+  const { email, password, fullName} = req.body;
+  //console.log(fullName);
 
   try {
     const existingUser = await getUserByEmail(email);
@@ -33,7 +35,7 @@ export const register = async (req, res) => {
     }
 
     //if this is a new user email
-    const user = await createUser(email, password);
+    const user = await createUser(email, password, fullName);
     res.status(201).json({ message: 'User registered successfully', user });
   } catch (error) {
     res.status(500).json({ message: 'Error registering user', error: error.message });
@@ -73,6 +75,7 @@ export const login = async (req, res) => {
       user: {
         id: user.user_id,
         email: user.email,
+        profileImage: user.profile_image
       },
     });
   } catch (error) {

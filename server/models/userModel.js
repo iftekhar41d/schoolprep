@@ -1,11 +1,11 @@
 import db from "../utils/db.js"
 import bcrypt from 'bcrypt'
 
-const createUser = async (email, password) => {
+const createUser = async (email, password, fullName) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const result = await db.query(
-      'INSERT INTO users (email, pwd) VALUES ($1, $2) RETURNING *',
-      [email, hashedPassword]
+      'INSERT INTO users (email, pwd, fullname) VALUES ($1, $2, $3) RETURNING *',
+      [email, hashedPassword, fullName]
     );
     return result.rows[0];
   };

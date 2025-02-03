@@ -189,6 +189,11 @@ CREATE TABLE question_report (
     UNIQUE (user_id, question_id)
 );
 
+alter table users
+add column fullname TEXT;
+
+alter table users
+add column profile_image TEXT;
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 -- Create Indexes for Performance

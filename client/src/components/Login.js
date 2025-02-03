@@ -31,7 +31,7 @@ function Login() {
 
       //make API call
       const response = await api.post('/login', loginData);
-      console.log(response);
+      //console.log(response);
       if (response.data.token){
           localStorage.setItem('token', response.data.token); //store jwt token
           //console.log('Token saved successfully');
@@ -42,7 +42,7 @@ function Login() {
       //console.log(response.data.user.email);
       //console.log(response.data.user.id);      
       setErrorMessage('');
-      login(response.data.user.email, response.data.user.id);//update context
+      login(response.data.user.email, response.data.user.id, response.data.user.profileImage || 'profile1.png');//update context
       /*implement separate code for setting admin/user flag */
       navigate('/dashboard'); //go to dashboard
 

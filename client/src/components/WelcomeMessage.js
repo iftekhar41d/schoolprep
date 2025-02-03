@@ -2,11 +2,19 @@ import React, { useContext } from 'react';
 import { AuthContext } from './AuthContext.js';
 
 function WelcomeMessage() {
-    const { loggedinUser } = useContext(AuthContext);
+    const { loggedinUser, profileImage } = useContext(AuthContext);
 
   return (
     <div className='container welcome-msg'>
-        {loggedinUser && <p>Welcome, {loggedinUser}</p>}
+        {loggedinUser &&(
+          <div className='welcome-content'> 
+            <img
+                src={`/profile/${profileImage}`}
+                alt="Profile"
+                className='welcome-profile-img'/>
+            <p>Welcome, {loggedinUser}</p>
+          </div>
+        )}
     </div>
   )
 }
