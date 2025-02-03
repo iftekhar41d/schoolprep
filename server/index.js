@@ -17,6 +17,8 @@ import classLevelRouter from "./controllers/classLevelsController.js";
 import router from "./controllers/manageQuestionsController.js";
 import lessonsRouter from "./controllers/manageLessonsController.js";
 import forgetPasswordRouter from "./controllers/forgetPasswordController.js";
+import imageUploadRouter from "./controllers/imageUploadController.js";
+import userProfileRouter from "./controllers/userProfileController.js";
 
 const envVariables = dotenv.config(); //for accessing environment variables
 const app = express(); 
@@ -42,6 +44,7 @@ app.use(cors()); //allow all origins
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
+app.use(express.static("public"));
 
 //mount routes
 app.use('/api/users', authRoutes);
@@ -55,6 +58,8 @@ app.use('/api', classLevelRouter);
 app.use('/api',router);
 app.use('/api', lessonsRouter);
 app.use('/api', forgetPasswordRouter);
+app.use('/api', imageUploadRouter);
+app.use('/api', userProfileRouter);
 
 //start server
 app.listen(PORT, ()=>{

@@ -10,7 +10,7 @@ const LogoutButton = () => {
         logout(); // Clear authentication state
     };
 
-    return (<button className="btn btn-primary" onClick={handleLogout}> Logout </button>);
+    return (<button className="btn btn-primary logout-btn" onClick={handleLogout}> Logout </button>);
 };
 
 export default LogoutButton;
